@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <pthread.h>
 #include <unistd.h>
@@ -41,6 +40,7 @@ void* correr(void* arg) {
             cavalo->distancia_percorrida = DISTANCIA_MAX;
         }
         
+        // Ajuste no tempo de espera: tempo_espera = (180ms a 50ms) - (velocidade * 15ms) + (rand 0-50ms)
         int tempo_espera = 180000 - (cavalo->velocidade_base * 15000);
         tempo_espera += (rand_r(&cavalo->seed) % 50000);
         usleep(tempo_espera);
@@ -61,12 +61,13 @@ void* correr(void* arg) {
     return NULL;
 }
 
+// FUNÇÃO CORRIGIDA: Adicionada a velocidade base na saída para corresponder aos 3 argumentos.
 void mostrar_cavalos() {
     printf("\n🐎 CAVALOS DISPONÍVEIS PARA APOSTA:\n");
     printf("==================================\n");
     for (int i = 0; i < NUM_CAVALOS; i++) {
-        printf("%d - %s\n", 
-               cavalos[i].id, cavalos[i].nome, cavalos[i].velocidade_base);
+        printf("%d - %s (Vel: %d)\n", 
+                cavalos[i].id, cavalos[i].nome, cavalos[i].velocidade_base);
     }
     printf("==================================\n");
 }
@@ -161,7 +162,7 @@ int main() {
         for (int j = 0; j < NUM_CAVALOS; j++) {
             if (cavalos[j].colocacao == i) {
                 printf("%dº lugar: %s (vel: %d)\n", 
-                       i, cavalos[j].nome, cavalos[j].velocidade_base);
+                        i, cavalos[j].nome, cavalos[j].velocidade_base);
                 break;
             }
         }
